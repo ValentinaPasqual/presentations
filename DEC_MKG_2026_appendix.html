@@ -1,0 +1,479 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Competing Certainties</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: a three-slide talk on a 1600×900 stage scaled to the window. Slide 2 steps through the Hamlet example, with the RDF lighting up on the left. */
+:root{
+  --bg:#E9ECEF; --slide:#FAFBFC; --ink:#17202A; --muted:#58646F; --line:#CDD4DB; --chip:#EEF1F4;
+  --reality:#1D6A88; --dox:#6A5AA8; --conj:#2F7A47; --clash:#BF3F0C;
+  --f-display:'Newsreader', Georgia, serif; --f-body:'IBM Plex Sans', Arial, sans-serif; --f-mono:'IBM Plex Mono','Courier New',monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1318; --slide:#171E27; --ink:#E5EAF0; --muted:#9AA6B3; --line:#2D3845; --chip:#1E2731;
+  --reality:#62B4D4; --dox:#AD9EE6; --conj:#78C28F; --clash:#F08A5D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1318; --slide:#171E27; --ink:#E5EAF0; --muted:#9AA6B3; --line:#2D3845; --chip:#1E2731;
+  --reality:#62B4D4; --dox:#AD9EE6; --conj:#78C28F; --clash:#F08A5D; color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:12px;overflow-x:hidden}
+#outer{width:100%}
+#fit{margin:0 auto;overflow:hidden;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.12)}
+.stage{width:1600px;height:900px;transform-origin:top left;background:var(--slide);padding:48px 60px 32px;display:grid;grid-template-rows:minmax(0,1fr) auto;gap:18px;box-sizing:border-box}
+body.flow #fit{width:auto!important;height:auto!important}
+body.flow .stage{width:auto;height:auto;transform:none!important;padding:22px 16px}
+body.flow .main,body.flow .row3,body.flow .theories{grid-template-columns:1fr;flex-direction:column}
+body.flow .code{order:2}
+
+.slide{display:flex;flex-direction:column;gap:20px;min-height:0}
+.slide[hidden]{display:none!important}
+.eyebrow{font-size:15px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--clash)}
+h1{font-family:var(--f-display);font-weight:600;font-size:52px;line-height:1.08;margin:6px 0 0;text-wrap:balance}
+body.flow h1{font-size:28px}
+h1 em{font-style:italic;font-weight:400;color:var(--reality)}
+.k-dox{color:var(--dox);font-weight:600}.k-epi{color:var(--reality);font-weight:600}.k-conj{color:var(--conj);font-weight:600}.k-clash{color:var(--clash);font-weight:600}
+
+/* slide 1 */
+.theories{display:flex;align-items:center;gap:28px}
+.theory{flex:1;border:1px solid var(--line);border-radius:14px;padding:18px 28px;display:flex;flex-direction:column;gap:8px;background:color-mix(in srgb, var(--chip) 60%, var(--slide))}
+.tag{font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--reality)}
+.theory p{margin:0;font-size:28px;line-height:1.35}
+.leo{color:var(--clash);font-weight:600}
+.neq{font:400 72px/1 var(--f-display);color:var(--clash)}
+.note{margin:0;font-size:22px;font-style:italic;color:var(--muted)}
+.gaplbl{margin:4px 0 0;font:600 26px/1.2 var(--f-display)}
+.gaplbl span{color:var(--clash);font-style:italic;font-weight:400}
+.spectrum{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:22px;align-items:stretch}
+body.flow .spectrum{grid-template-columns:1fr}
+.scard{border:1px solid var(--line);border-radius:14px;padding:22px 24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.scard h3{margin:0;font:600 26px/1.15 var(--f-display)}
+.scard p{margin:0;font-size:18px;line-height:1.45;color:var(--muted)}
+.scard pre{margin:auto 0 0;font:500 13px/1.4 var(--f-mono);background:var(--chip);border-radius:8px;padding:8px 10px;overflow-x:auto}
+.scard.dec{border:3px solid var(--reality);background:color-mix(in srgb, var(--reality) 8%, var(--slide))}
+.scard.dec p{color:var(--ink);font-size:18px}
+.worlds{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:baseline;font-size:18px;line-height:1.35;padding:10px 14px;background:var(--slide);border-radius:10px}
+.worlds b{font-weight:600}
+.verdict-tag{align-self:flex-start;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.verdict-tag.bad{color:var(--clash);border:1.5px solid var(--clash)}
+.verdict-tag.good{color:#FFFFFF;background:var(--reality)}
+.reif{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+body.flow .reif{grid-template-columns:1fr}
+.rcard{border:1px solid var(--line);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.rcard pre{margin:0;font:500 14px/1.5 var(--f-mono);background:var(--chip);border-radius:8px;padding:10px 12px;overflow-x:auto}
+.rcard p{margin:0;font-size:19px;line-height:1.4}
+.verdict{margin:0;font-size:24px;font-weight:600;color:var(--clash)}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:36px}
+.gapc{border-top:3px solid var(--ink);padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.gapc b{font-size:16px;color:var(--clash);letter-spacing:.04em}
+.gapc p{margin:0;font-size:22px;line-height:1.4}
+
+/* slide 2 */
+.main{display:grid;grid-template-columns:560px minmax(0,1fr);gap:40px;min-height:0;flex:1}
+.code{display:flex;flex-direction:column;gap:4px;min-width:0;overflow-x:auto}
+.code .h{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:6px 0 2px}
+.code .h:first-child{margin-top:0}
+.lines{font:400 13.5px/1.4 var(--f-mono);white-space:pre;display:flex;flex-direction:column}
+.l{padding:0 10px;border-left:4px solid transparent;border-radius:3px;color:var(--ink);transition:background .3s,color .3s,opacity .3s,border-color .3s}
+.l.future{opacity:.28}
+.l.out{display:none}
+.l.out.shown{display:block}
+.l.on{font-weight:600}
+.l.on.dox{background:color-mix(in srgb, var(--dox) 16%, transparent);border-left-color:var(--dox);color:var(--dox)}
+.l.on.epi{background:color-mix(in srgb, var(--reality) 16%, transparent);border-left-color:var(--reality);color:var(--reality)}
+.l.on.clash{background:color-mix(in srgb, var(--clash) 15%, transparent);border-left-color:var(--clash);color:var(--clash)}
+.l.on.conj{background:color-mix(in srgb, var(--conj) 16%, transparent);border-left-color:var(--conj);color:var(--conj)}
+.gap{height:6px}
+.h1s{font-size:34px;margin:6px 0 0}
+.erow{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.crit{margin:0;font-size:15px;color:var(--muted)}
+.crit b{color:var(--clash);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-right:6px}
+.hrow{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px}
+.pchips{display:flex;gap:8px;flex-wrap:wrap}
+.pchips span{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:500;padding:7px 14px 7px 8px;border-radius:999px;border:1.5px solid var(--line);color:var(--muted);transition:all .25s}
+.pchips i{font:600 13px var(--f-mono);font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--chip)}
+.pchips span.on{border-color:var(--ink);color:var(--ink);background:var(--chip)}
+.pchips span.on i{background:var(--ink);color:var(--slide)}
+body.flow .h1s{font-size:24px}
+.s2grid{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px;flex:1;min-height:0}
+body.flow .s2grid{grid-template-columns:1fr}
+.story{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.story li{padding:8px 12px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:opacity .25s,background .25s,border-color .25s}
+.story li.future{opacity:.3}
+.story li.on .t.later{opacity:.3}
+.story li.on{background:var(--chip);border-color:var(--ink)}
+.story b{display:block;font:600 17px/1.25 var(--f-display);font-size:19px}
+.story li.on b{color:var(--ink)}
+.story .t{display:flex;gap:6px;align-items:baseline;font-size:14px;line-height:1.35;color:var(--muted);margin-top:3px}
+.story .t i{font-style:normal;flex:none;font-size:10px;font-weight:600;letter-spacing:.08em;padding:1px 6px;border-radius:4px;border:1.2px solid var(--muted)}
+.story .t.inf i{border-style:dashed}
+.story .t i.num{border-radius:50%;border-style:solid;width:18px;height:18px;padding:0;display:grid;place-items:center;font-size:11px}
+.story li:last-child .t{font-size:15px;color:var(--ink);font-weight:500}
+.demo2{position:relative;flex:1;min-height:0;display:flex;justify-content:center}
+.demo2 .diagram{width:100%;max-width:1260px}
+.rdfpop{position:absolute;right:0;top:0;bottom:0;width:620px;overflow:auto;background:var(--slide);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 8px 28px rgba(0,0,0,.18);z-index:2}
+.rdfpop[hidden]{display:none!important}
+body.flow .rdfpop{position:static;width:auto}
+.pd{color:var(--dox);font-weight:600}.pe{color:var(--reality);font-weight:600}.pc{color:var(--conj);font-weight:600}
+.tp-dox{fill:var(--dox);font-weight:600;font-style:normal}.tp-epi{fill:var(--reality);font-weight:600;font-style:normal}.tp-conj{fill:var(--conj);font-weight:600;font-style:normal}
+.demo{display:flex;flex-direction:column;gap:12px;min-width:0}
+.diagram{min-width:0;overflow-x:auto}
+.diagram svg{display:block;width:100%;height:auto;min-width:560px}
+.si{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;min-height:36px}
+.si span{font-size:17px;line-height:1.3;padding:6px 12px;border-radius:8px;border:1.5px solid var(--ink)}
+.si span.si-i{border-style:dashed}
+.si b{font-size:12px;letter-spacing:.1em;margin-right:8px}
+.infbox{fill:none;stroke-width:1.5;stroke-dasharray:4 3}
+.infbox.epi{stroke:var(--reality)}.infbox.conj{stroke:var(--conj)}
+.pill.inf rect{stroke-width:1.5;stroke-dasharray:4 3}
+.pill.inf.dox rect{fill:color-mix(in srgb, var(--dox) 12%, var(--slide));stroke:var(--dox)}.pill.inf.dox text{fill:var(--dox)}
+.pill.inf.epi rect{fill:color-mix(in srgb, var(--reality) 12%, var(--slide));stroke:var(--reality)}.pill.inf.epi text{fill:var(--reality)}
+.pill.inf.conj rect{fill:color-mix(in srgb, var(--conj) 12%, var(--slide));stroke:var(--conj)}.pill.inf.conj text{fill:var(--conj)}
+.pill.inf.clash rect{fill:color-mix(in srgb, var(--clash) 12%, var(--slide));stroke:var(--clash)}.pill.inf.clash text{fill:var(--clash)}
+.lg text{font:500 13px var(--f-body);fill:var(--muted)}
+.ptbox>rect{fill:var(--slide);stroke:var(--ink);stroke-width:1.5}
+.pt{font:500 14px var(--f-mono);fill:var(--muted)}
+.lg-s{fill:none;stroke:var(--ink);stroke-width:1.5}.lg-i{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-dasharray:4 3}
+.lead{margin:8px 0 0;font:600 32px/1.22 var(--f-display);min-height:40px;text-wrap:balance;max-width:1400px}
+body.flow .lead{font-size:22px;min-height:0}
+.lead .k-dox,.lead .k-epi,.lead .k-conj,.lead .k-clash{font-style:italic}
+
+/* slide 3 */
+.slide.s3{background:transparent}
+.qs{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;flex:1;align-content:start}
+body.flow .qs{grid-template-columns:1fr}
+.q{border-radius:16px;padding:34px;display:flex;flex-direction:column;gap:14px;background:var(--ink);color:var(--slide)}
+.q .tag{color:color-mix(in srgb, var(--clash) 70%, var(--slide))}
+.q h3{margin:0;font:600 36px/1.12 var(--f-display);text-wrap:balance}
+.q p{margin:0;font-size:20px;line-height:1.45;opacity:.82}
+.close{margin:0;font:italic 400 30px/1.3 var(--f-display);color:var(--muted)}
+
+/* bottom bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:14px}
+.src{font-size:13px;color:var(--muted)}
+.ctrl{display:flex;align-items:center;gap:10px}
+.dots{display:flex;gap:6px}
+.dots button{width:22px;height:6px;border:0;border-radius:3px;background:var(--line);cursor:pointer;padding:0}
+.dots button.on{background:var(--ink)}
+.pg{font:500 14px var(--f-mono);color:var(--muted);min-width:44px;text-align:center}
+.nav{font:600 15px var(--f-body);border-radius:8px;padding:9px 16px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.nav.next{background:var(--ink);color:var(--slide)}
+.nav:disabled{opacity:.3;cursor:default}
+.tool{font:500 13px var(--f-body);color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:7px;padding:6px 10px;cursor:pointer}
+button:focus-visible{outline:2px solid var(--reality);outline-offset:2px}
+
+/* SVG */
+.card>rect{fill:var(--slide);stroke:var(--line);stroke-width:1.5}
+.card.dox>rect{stroke:var(--dox);stroke-width:2}
+.card.epi>rect{stroke:var(--reality);stroke-width:2.5}
+.card.conj>rect{stroke:var(--conj);stroke-width:2.5}
+.card.delu>rect{stroke:var(--clash);stroke-width:2.5;stroke-dasharray:7 5}
+.nm{font:600 15px var(--f-mono);fill:var(--ink)}
+.who{font:italic 400 16px var(--f-body);fill:var(--muted)}
+.sub{font:400 16px var(--f-body);fill:var(--muted)}
+.obj{font:600 22px var(--f-body);fill:var(--ink)}
+.small{font:600 11px var(--f-body);letter-spacing:.1em;fill:var(--muted)}
+.ln{font:500 15px var(--f-body);fill:var(--ink)}
+.ln.imp{fill:var(--conj)}
+.ln.inf{font-style:italic;fill:var(--conj)}
+.pill text{font:600 14px var(--f-body);fill:#FFFFFF;stroke:none}
+.pill rect{stroke-dasharray:none}
+.pill.dox rect{fill:var(--dox)}.pill.epi rect{fill:var(--reality)}.pill.conj rect{fill:var(--conj)}.pill.clash rect{fill:var(--clash)}
+.warn rect{fill:color-mix(in srgb, var(--clash) 12%, var(--slide));stroke:var(--clash);stroke-width:2}
+.warn text{font:600 16px var(--f-body);fill:var(--clash)}
+.real>rect{fill:color-mix(in srgb, var(--reality) 10%, var(--slide));stroke:var(--reality);stroke-width:2.5}
+.rt{font:600 17px var(--f-mono);fill:var(--reality)}
+.rn{font:400 14px var(--f-body);fill:var(--muted)}
+.flow-epi{stroke:var(--reality);stroke-width:3;fill:none;stroke-dasharray:7 5}
+.flow-conj{stroke:var(--conj);stroke-width:3;fill:none;stroke-dasharray:7 5}
+.fl{font:600 15px var(--f-mono)}
+.fl.epi{fill:var(--reality)}.fl.conj{fill:var(--conj)}
+.clash{stroke:var(--clash);stroke-width:2.5;stroke-dasharray:8 5;fill:none}
+.cl{font:600 14px var(--f-body);fill:var(--clash)}
+.dot{fill:var(--clash);stroke:none}
+.box rect{fill:var(--slide);stroke:var(--line);stroke-width:2}
+.box.dox rect{stroke:var(--dox)}.box.epi rect{stroke:var(--reality);stroke-width:2.5}.box.conj rect{stroke:var(--conj);stroke-width:2.5}.box.delu rect{stroke:var(--clash);stroke-width:2.5}
+.tri{font:500 20px var(--f-body);fill:var(--ink)}.tri .ts{font-weight:600}.tri .tp{fill:var(--muted);font-weight:400;font-size:17px}
+.tri.imp,.tri.imp .tp{fill:var(--conj)}
+.chip rect{fill:var(--slide);stroke:var(--ink);stroke-width:1.5}.chip text{font:500 14px var(--f-mono);fill:var(--muted)}
+.rt{font:600 24px var(--f-display);fill:var(--reality)}
+.tp-clash{fill:var(--clash);font-weight:600;font-style:normal}
+.sum{display:flex;flex-direction:column;gap:20px;padding:4px;animation:appear .6s ease-out both}
+.sum-k{margin:0;font-size:14px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--reality)}
+.sum-row{display:flex;gap:20px;align-items:baseline}
+.sum-n{font:600 44px/1 var(--f-display);color:var(--reality);width:32px;flex:none}
+.sum-row h3{margin:0 0 4px;font:600 30px/1.15 var(--f-display)}
+.sum-row p{margin:0;font-size:19px;color:var(--muted);max-width:60ch}
+.sum-end{margin:8px 0 0;font:italic 600 34px/1.2 var(--f-display);color:var(--reality)}
+.sum-vs{margin:4px 0 0;padding:16px 20px;border-left:4px solid var(--clash);background:color-mix(in srgb, var(--clash) 9%, transparent);font-size:19px;border-radius:4px}
+.appear{animation:appear .6s ease-out both}
+.slide.enter{animation:appear .45s ease-out both}
+@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.appear,.sum,.slide.enter{animation:none}.l{transition:none}}
+</style>
+
+<div id="outer"><div id="fit"><div class="stage" id="stage">
+
+  <!-- Slide 1 -->
+  <section class="slide s1" id="s1">
+    <div>
+      <div class="eyebrow">1 · The challenge · MKG dimension: perspective &amp; stance</div>
+      <h1>Disagreement: <em>competing, incompatible certainties</em></h1>
+    </div>
+    <div class="theories">
+      <div class="theory"><span class="tag">Stratfordian tradition · scholars</span><p><b>Shakespeare</b> wrote <i>Hamlet</i></p></div>
+      <span class="neq" aria-label="disagrees with">≠</span>
+      <div class="theory"><span class="tag">J. Thomas Looney, 1920</span><p><span class="leo">Edward de Vere</span> wrote <i>Hamlet</i></p></div>
+    </div>
+    <p class="note">Each side is certain. The uncertainty is the critical debate itself, and a knowledge graph should keep it.</p>
+    <p class="gaplbl">How do we put both in one knowledge graph? <span>Today it is all or nothing.</span></p>
+    <div class="spectrum">
+      <div class="scard"><span class="verdict-tag bad">The gap · too strong</span><h3>Merge the theories</h3>
+        <p>Named graphs read as one union: both claims become facts. <i>Hamlet</i> gets two authors, or the graph breaks.</p>
+        <pre>GRAPH :A {…}  ∪  GRAPH :B {…}</pre></div>
+      <div class="scard"><span class="verdict-tag bad">The gap · too weak</span><h3>Quote the theories</h3>
+        <p>Isolated named graphs or RDF 1.2 triple terms: the claim is recorded, not asserted, and never reasoned with.</p>
+        <pre>:looney :discusses &lt;&lt;( :Hamlet :author :DeVere )&gt;&gt;</pre></div>
+      <div class="scard dec"><span class="verdict-tag good">DEC: in between</span><h3>Say how much each theory counts</h3>
+        <p>The provenance verb puts each theory in one of three worlds, and reasoning follows it:</p>
+        <div class="worlds">
+          <b class="k-dox">Doxastic</b><span><i>believe</i>: a belief, kept apart from the facts</span>
+          <b class="k-epi">Epistemic</b><span><i>accept</i>: knowledge, it becomes fact</span>
+          <b class="k-conj">Conjectural</b><span><i>suppose</i>: a hypothesis built on the facts</span>
+          <b class="k-clash">Delusional</b><span><i>detected</i>: a theory that contradicts the facts</span>
+        </div>
+        <p>Theories coexist, and clashes are detected.</p></div>
+    </div>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide s2" id="s2" hidden>
+    <div>
+      <div class="eyebrow">2 · Suggested principles</div>
+      <h1 class="h1s">Three principles, shown on <em>Hamlet</em></h1>
+      <p id="caption" hidden></p>
+    </div>
+    <div class="s2grid">
+    <ol class="story" id="story" aria-live="polite"></ol>
+    <div class="demo2">
+      <div class="diagram" id="diagram"></div>
+      <div class="code rdfpop" id="code" hidden></div>
+    </div>
+    </div>
+  </section>
+
+  <div class="bar">
+    <span class="src" id="src">Pasqual &amp; Vitali · The DEC framework · arXiv:2606.15246 · MKG @ ISWC 2026</span>
+    <div class="ctrl">
+      <button class="tool" id="rdfbtn" type="button" hidden>Show RDF</button>
+      <button class="tool" id="fs" type="button">Full screen</button>
+      <button class="nav" id="prev" type="button" aria-label="Back">←</button>
+      <div class="dots" id="dots"></div>
+      <span class="pg" id="pg">1 / 2</span>
+      <button class="nav next" id="next" type="button">Next →</button>
+    </div>
+  </div>
+</div></div></div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const N=8;
+const INPUT=[
+  ['ex:tradition     ex:believes  ex:OnlyShakespeare .',1,'dox'],
+  ['ex:JThomasLooney ex:discusses ex:OnlyDeVere .',1,'dox'],
+  ['ex:believes  rdf:type dec:doxasticPredicate .',1,'dox'],
+  ['ex:discusses rdf:type dec:doxasticPredicate .',1,'dox'],
+  ['GRAPH ex:OnlyShakespeare {',1,'dox'],
+  ['    ex:Hamlet ex:author ex:Shakespeare . }',1,'dox'],
+  ['GRAPH ex:OnlyDeVere {',1,'dox'],
+  ['    ex:Hamlet ex:author ex:EdwardDeVere . }',1,'dox'],
+  ['',0],
+  ['ex:scholars ex:accept ex:OnlyShakespeare .',2,'epi'],
+  ['ex:accept rdf:type dec:epistemicPredicate .',2,'epi'],
+  ['',0],
+  ['rdf:subject dec:closedFor ex:author .',4,'clash'],
+  ['',0],
+  ['ex:scholars ex:suppose ex:crazyhypothesis .',6,'conj'],
+  ['ex:suppose rdf:type dec:conjecturalPredicate .',6,'conj'],
+  ['GRAPH ex:crazyhypothesis {',6,'conj'],
+  ['    ex:Shakespeare owl:sameAs ex:EdwardDeVere . }',6,'conj']
+];
+const OUTPUT=[
+  ['ex:OnlyShakespeare a dec:doxasticWorld .',1,'dox'],
+  ['ex:OnlyDeVere      a dec:doxasticWorld .',1,'dox'],
+  ['ex:OnlyShakespeare a dec:epistemicWorld .',2,'epi'],
+  ['GRAPH dec:reality {',3,'epi'],
+  ['    ex:Hamlet ex:author ex:Shakespeare . }',3,'epi'],
+  ['ex:OnlyDeVere a dec:delusionalWorld ;',5,'clash'],
+  ['    dec:disagreesWith dec:reality, ex:OnlyShakespeare .',5,'clash'],
+  ['ex:crazyhypothesis a dec:conjecturalWorld .',6,'conj'],
+  ['GRAPH ex:crazyhypothesis {',7,'conj'],
+  ['    ex:Hamlet ex:author ex:Shakespeare, ex:EdwardDeVere . }',7,'conj'],
+  ['ex:crazyhypothesis dec:disagreesWith',7,'clash'],
+  ['    ex:OnlyDeVere, ex:OnlyShakespeare .',7,'clash']
+];
+const CAP=[
+  `Two theories. <span class="k-dox">Believe</span> and <span class="k-dox">discuss</span> are doxastic, so both are just beliefs.`,
+  `We declare <span class="k-epi">accept</span> epistemic: the Shakespeare theory becomes knowledge.`,
+  `Knowledge <span class="k-epi">permeates</span> into reality. De Vere stays a belief.`,
+  `We add a rule: one author per play.`,
+  `The reasoner finds that De Vere <span class="k-clash">disagrees</span> with reality: it is <span class="k-clash">delusional</span>, but stays in the data.`,
+  `We declare <span class="k-conj">suppose</span> conjectural: Shakespeare and de Vere may be the same person.`,
+  `Reality <span class="k-conj">permeates</span> into the conjecture, which now <span class="k-clash">disagrees</span> with both theories.`,
+  `Competing theories live in one graph without breaking it.`
+];
+const SUMMARY=`<div class="sum">
+  <p class="sum-k">Takeaways</p>
+  <div class="sum-row"><span class="sum-n">1</span><div><h3>Stance in the data</h3><p>Declaring a predicate as <span class="k-dox">believe</span>, <span class="k-epi">accept</span> or <span class="k-conj">suppose</span> tells the reasoner how much a theory counts.</p></div></div>
+  <div class="sum-row"><span class="sum-n">2</span><div><h3>Controlled permeation</h3><p>Knowledge flows into reality, reality flows into conjectures, beliefs stay apart.</p></div></div>
+  <div class="sum-row"><span class="sum-n">3</span><div><h3>Disagreement found, never erased</h3><p>Clashes are detected and recorded; no theory is deleted.</p></div></div>
+  <p class="sum-end">Theories coexist without breaking the graph.</p>
+</div>`;
+
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const tint=t=>esc(t).replace(/ex:(believes|discusses)\b/g,'<span class="pd">$&</span>').replace(/ex:accept\b/g,'<span class="pe">$&</span>').replace(/ex:suppose\b/g,'<span class="pc">$&</span>');
+const lines=(arr,out)=>arr.map(([t,s,c])=>t===''?'<div class="gap"></div>':`<div class="l ${c} ${out?'out':''}" data-s="${s}">${tint(t)}</div>`).join('');
+$('code').innerHTML=`<p class="h">Stated · the input RDF</p><div class="lines">${lines(INPUT)}</div><p class="h">Inferred · the reasoner output</p><div class="lines">${lines(OUTPUT,true)}</div>`;
+
+let slide=1, step=1, last=0;
+const A=s=>(s===step && step>last)?'appear':'';
+function pill(x,y,t,c,s,stated){const w=t.length*8.4+22;return [w,`<g class="pill ${c} ${stated?'':'inf'} ${A(s)}"><rect x="${x}" y="${y}" width="${w}" height="26" rx="13"/><text x="${x+w/2}" y="${y+18}" text-anchor="middle">${t}</text></g>`];}
+const head=(x,y,cls)=>`<path d="M${x-11},${y-7} L${x},${y} L${x-11},${y+7}" class="${cls}" style="stroke-dasharray:none" stroke-linejoin="round"/>`;
+const STORY=[
+  [1,1,'Two theories, both beliefs',[['d','<span class="k-dox">believes</span>, <span class="k-dox">discusses</span> are doxastic',1],['i','both theories are doxastic',1]]],
+  [2,2,'Shakespeare becomes knowledge',[['d','scholars <span class="k-epi">accept</span> it; accept is epistemic',2],['i','that theory is epistemic',2]]],
+  [3,3,'Knowledge enters reality',[['i','its triple <span class="k-epi">permeates</span> into reality',3]]],
+  [4,5,'One author per play: De Vere disagrees',[['d','a rule: closedFor ex:author',4],['i','De Vere <span class="k-clash">disagrees</span> with reality: <span class="k-clash">delusional</span>, but kept',5]]],
+  [6,6,'A conjecture',[['d','scholars <span class="k-conj">suppose</span> Shakespeare = de Vere',6],['i','it is a conjectural theory',6]]],
+  [7,7,'Reality enters the conjecture',[['i','reality <span class="k-conj">permeates</span> in: two authors',7],['i','it <span class="k-clash">disagrees</span> with both theories',7]]],
+  [8,8,'Takeaways',[['1','Stance in the data',8],['2','Controlled permeation',8],['3','Disagreement found, never erased',8]]]
+];
+$('story').innerHTML=STORY.map(([a,b,ti,ls])=>`<li data-a="${a}" data-b="${b}"><b>${ti}</b>${ls.map(([t,x,k])=>`<span class="t ${t==='i'?'inf':''}" data-k="${k}"><i class="${/^[0-9]$/.test(t)?'num':''}">${t==='d'?'DECLARED':t==='i'?'INFERRED':t}</i><span>${x}</span></span>`).join('')}</li>`).join('');
+$('story').onclick=e=>{const li=e.target.closest('li'); if(li){const n=+li.dataset.a; if(n<step) last=99; step=n; render();}};
+const SI=[
+  ['two named graphs · <i>believes</i>, <i>discusses</i> are doxastic','both theories are doxastic worlds'],
+  ['scholars <i>accept</i> OnlyShakespeare · <i>accept</i> is epistemic','OnlyShakespeare is also an epistemic world'],
+  ['nothing new','its triple permeates into reality'],
+  ['one author per play (<i>closedFor</i>)','nothing yet'],
+  ['nothing new','De Vere is delusional and disagrees with reality and Shakespeare'],
+  ['scholars <i>suppose</i> crazyhypothesis · <i>suppose</i> is conjectural','crazyhypothesis is a conjectural world'],
+  ['nothing new','reality permeates into it · <i>Hamlet</i> gets both authors · it disagrees with both'],
+  null];
+
+function drawStep(){
+  const W=(x,y,w,h,cls)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" class="${cls}"/>`;
+  const trip=(x,y,s,p,o,cls='')=>`<text class="tri ${cls}" x="${x}" y="${y}"><tspan class="ts">${s}</tspan> <tspan class="tp">${p}</tspan> <tspan class="ts">${o}</tspan></text>`;
+  const dis=(d,x1,y1,x2,y2,lx,ly)=>`<path class="clash" d="${d}"/><circle cx="${x1}" cy="${y1}" r="5" class="dot"/><circle cx="${x2}" cy="${y2}" r="5" class="dot"/><text class="cl" x="${lx}" y="${ly}">disagrees</text>`;
+  let s=`<svg viewBox="0 0 1240 550" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Theories and reality, step ${step} of ${N}">
+    <g class="lg"><rect x="980" y="42" width="26" height="16" rx="4" class="lg-s"/><text x="1014" y="55">stated</text><rect x="1090" y="42" width="26" height="16" rx="4" class="lg-i"/><text x="1124" y="55">inferred</text></g>`;
+
+  // predicate types (stated) — chip row at the bottom
+  {
+    const rows=[['believes','dox','doxastic',1],['discusses','dox','doxastic',1],['accept','epi','epistemic',2],['suppose','conj','conjectural',6]].filter(r=>step>=r[3]);
+    let x=40;
+    s+=`<text class="small" x="40" y="19">PREDICATE TYPES</text>`;
+    x=170;
+    rows.forEach(r=>{const t=`${r[0]} → ${r[2]}`; const w=t.length*8.2+26;
+      s+=`<g class="chip ${A(r[3])}"><rect x="${x}" y="1" width="${w}" height="28" rx="14"/><text x="${x+13}" y="20"><tspan class="tp-${r[1]}">${r[0]}</tspan> → <tspan class="tp-${r[1]}">${r[2]}</tspan></text></g>`; x+=w+10;});
+  }
+
+  if(step>=4){
+    const t='one author per play  (closedFor ex:author)'; const w=t.length*8.2+26;
+    s+=`<g class="${A(4)}"><text class="small" x="40" y="57">INFERENCE RULES</text><g class="chip"><rect x="170" y="39" width="${w}" height="28" rx="14"/><text x="183" y="58"><tspan class="tp-clash">one author per play</tspan>  (closedFor ex:author)</text></g></g>`;
+  }
+  s+=`<g transform="translate(0,76)">`;
+  // arrows and disagreements (inferred → dashed)
+  if(step>=3) s+=`<g class="${A(3)}"><path class="flow-epi" d="M380,170 C430,170 420,236 466,236"/>${head(470,236,'flow-epi')}<text class="fl epi" x="388" y="226">permeates</text></g>`;
+  if(step>=5) s+=`<g class="${A(5)}">${dis('M380,392 C430,392 425,330 470,330',380,392,470,330,392,416)}${dis('M320,210 L320,330',320,210,320,330,332,276)}</g>`;
+  if(step>=7) s+=`<g class="${A(7)}"><path class="flow-conj" d="M770,250 L876,250"/>${head(880,250,'flow-conj')}<text class="fl conj" x="784" y="238">permeates</text>
+      ${dis('M880,110 C770,60 500,60 380,100',880,110,380,100,590,62)}
+      ${dis('M1040,310 L1040,424 Q1040,440 1024,440 L380,440',1040,310,380,440,690,430)}</g>`;
+
+  // theory A
+  s+=`<g class="${step>=2?'box epi':'box dox'}">${W(40,80,340,130,'')}</g>
+    <text class="who" x="62" y="112">tradition <tspan class="tp-dox">believes</tspan>${step>=2?' · scholars <tspan class="tp-epi">accept</tspan>':''}</text>
+    ${trip(62,152,'Hamlet','author','Shakespeare')}`;
+  {const [w1,p1]=pill(62,168,'doxastic','dox',1); s+=p1; if(step>=2) s+=pill(68+w1,168,'epistemic','epi',2)[1];}
+
+  // theory B
+  s+=`<g class="box dox ${step>=5?'delu':''}">${W(40,330,340,130,'')}</g>
+    <text class="who" x="62" y="362">J. Thomas Looney <tspan class="tp-dox">discusses</tspan></text>
+    ${trip(62,402,'Hamlet','author','Edward de Vere')}`;
+  {const [w1,p1]=pill(62,418,'doxastic','dox',1); s+=p1; if(step>=5) s+=pill(68+w1,418,'delusional','clash',5)[1];}
+
+  // reality
+  s+=`<g class="real">${W(470,150,300,250,'')}</g><text class="rt" x="494" y="186">Reality</text>`;
+  if(step>=3) s+=`<g class="${A(3)}"><rect x="484" y="210" width="272" height="44" rx="8" class="infbox epi"/>${trip(498,239,'Hamlet','author','Shakespeare')}</g>`;
+  else s+=`<text class="rn" x="494" y="238">empty</text>`;
+
+  // conjecture
+  if(step>=6){
+    s+=`<g class="${A(6)}"><g class="box conj">${W(880,80,320,step>=7?230:130,'')}</g>
+      <text class="who" x="902" y="112">scholars <tspan class="tp-conj">suppose</tspan></text>
+      ${trip(902,152,'Shakespeare','sameAs','de Vere')}
+      ${pill(902,168,'conjectural','conj',6)[1]}</g>`;
+    if(step>=7) s+=`<g class="${A(7)}"><rect x="894" y="208" width="292" height="90" rx="8" class="infbox conj"/>
+      ${trip(908,238,'Hamlet','author','Shakespeare','imp')}
+      ${trip(908,276,'Hamlet','author','de Vere','imp')}</g>`;
+  }
+  const si=SI[step-1];
+  s+='</g></svg>';
+  $('diagram').innerHTML= step===N ? SUMMARY : s;
+  $('caption').innerHTML=CAP[step-1];
+  document.querySelectorAll('#story li').forEach(li=>{const a=+li.dataset.a,b=+li.dataset.b; li.classList.toggle('on',step>=a&&step<=b); li.classList.toggle('future',step<a);});
+  document.querySelectorAll('#story .t').forEach(t=>t.classList.toggle('later',+t.dataset.k>step));
+  document.querySelectorAll('.l').forEach(el=>{
+    const ls=+el.dataset.s;
+    el.classList.toggle('on',ls===step && step<N);
+    el.classList.toggle('future',ls>step);
+    el.classList.toggle('shown',ls<=step);
+  });
+  last=step;
+}
+
+function render(enter){
+  ['s1','s2'].forEach((id,i)=>{const el=$(id); el.hidden=(i+1)!==slide; if(enter && i+1===slide){el.classList.remove('enter'); void el.offsetWidth; el.classList.add('enter');}});
+  if(slide===2) drawStep();
+  $('dots').innerHTML= slide===2 ? Array.from({length:N},(_,i)=>`<button type="button" aria-label="Step ${i+1}" class="${i<step?'on':''}" data-i="${i+1}"></button>`).join('') : '';
+  $('pg').textContent=`${slide} / 2`;
+  $('src').innerHTML= slide===1 ? 'See: <i>The representation of historical uncertainties as the outcome of competing and incompatible certainties</i> · W3C RDF 1.1 Datasets Note · RDF 1.2' : 'Pasqual &amp; Vitali · The DEC framework · arXiv:2606.15246 · MKG @ ISWC 2026';
+  $('prev').disabled= slide===1;
+  $('next').disabled= slide===2 && step===N;
+  $('rdfbtn').hidden= slide!==2;
+  if(slide!==2){ $('code').hidden=true; $('rdfbtn').textContent='Show RDF'; }
+  $('next').textContent= slide===2 && step<N ? 'Next step →' : 'Next →';
+}
+function next(){
+  if(slide===2 && step<N){ step++; render(); return; }
+  if(slide<2){ slide++; if(slide===2){step=1; last=0;} render(true); }
+}
+function prev(){
+  if(slide===2 && step>1){ last=99; step--; render(); return; }
+  if(slide>1){ slide--; if(slide===2){step=N; last=99;} render(true); }
+}
+$('next').onclick=next; $('prev').onclick=prev;
+$('rdfbtn').onclick=()=>{ const c=$('code'); c.hidden=!c.hidden; $('rdfbtn').textContent=c.hidden?'Show RDF':'Hide RDF'; };
+$('dots').onclick=e=>{const i=e.target.dataset&&e.target.dataset.i; if(i){ if(+i<step) last=99; step=+i; render(); }};
+$('fs').onclick=()=>{try{const p=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();p&&p.catch&&p.catch(()=>{});}catch(e){}};
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault(); next();}
+  if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault(); prev();}
+});
+function fit(){
+  const fitEl=$('fit'), st=$('stage'), avail=$('outer').clientWidth;
+  if(window.innerWidth<760){document.body.classList.add('flow');st.style.transform='';return;}
+  document.body.classList.remove('flow');
+  const k=Math.min(avail/1600,(window.innerHeight-24)/900);
+  st.style.transform=`scale(${k})`;
+  fitEl.style.width=(1600*k)+'px'; fitEl.style.height=(900*k)+'px';
+}
+window.addEventListener('resize',fit);
+document.addEventListener('fullscreenchange',()=>setTimeout(fit,50));
+render(); fit();
+})();
+</script>
+
+</body></html>
